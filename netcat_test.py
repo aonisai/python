@@ -84,8 +84,6 @@ def main():
     if listen:
         server_loop()
 
-main()
-
 def client_sender(buffer):
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -96,7 +94,7 @@ def client_sender(buffer):
 
         while True:
             recv_len = 1
-            response = " "
+            response = ""
 
             while recv_len:
                 data    = client.recv(4096)
@@ -108,8 +106,8 @@ def client_sender(buffer):
 
             print response,
 
-            buffer  = raw_input(" ")
-            buffer  += "\n"
+            buffer = raw_input("")
+            buffer += "\n"
 
             client.send(buffer)
 
@@ -130,68 +128,69 @@ def server_loop():
     server.listen(5)
 
     while True:
-        client_socket, aadr = server.accept()
+        client_socket, addr = server.accept()
 
-        client_thread   = threading.Thread(
+        client_thread = threading.Thread(
             target=client_handler, args=(client_socket,)
         )
         client_thread.start()
 
-    def run_command(command):
-        command = command.rstrip()
+def run_command(command):
+    command = command.rstrip()
+
+    try:
+        output = subprocess.check_output(
+            command,stderr=subprocess.STDOUT,shell=True
+        )
+    except:
+        output = "Failed to execute command.\r\n"
+
+    # send output to client
+    return output
+
+def client_handler(client_socket):
+    global upload
+    global execute
+    global command
+
+    if len(upload_destination):
+
+        file_buffer = ""
+        while True:
+            data = client_socket.recv(1024)
+            if len(data) == 0:
+                break
+            else:
+                file_buffer += data
 
         try:
-            output  = subprocess.check_output(
-                command, stderr=subprocess.STDOUT, shell=True
+            file_descriptor = open(upload_destination,"wb")
+            file_descriptor.write(file_buffer)
+            file_descriptor.close()
+
+            client_socket.send(
+                "Successfully saved file to %s\r\n" % upload_destination
             )
         except:
-            output  = "Failed to execute command.\r\n"
+            client_socket.send(
+                "Failed to save file to %s\r\n" % upload_destination
+            )
 
-        # send output to client
-        return output
+    if len(execute):
+        output = run_command(execute)
+        client_socket.send(output)
 
-    def client_handler(client_socket):
-        global upload
-        global execute
-        global command
+    if command:
+        prompt = "<BHP:#> "
+        client_socket.send(prompt)
 
-        if len(upload_destination):
+        while True:
+            cmd_buffer = ""
+            while "\n" not in cmd_buffer:
+                cmd_buffer += client_socket.recv(1024)
 
-            file_buffer = " "
-            while True:
-                data = client_socket.recv(1024)
-                if len(data) == 0:
-                    break
-                else:
-                    file_buffer += data
+            response = run_command(cmd_buffer)
+            response += prompt
 
-            try:
-                file_descriptor = open(upload_destination, "wb")
-                file_descriptor.write(file_buffer)
-                file_descriptor.close()
-
-                client_socket.send(
-                    "Successfully saved file to %s\r\n" % upload_destination
-                )
-            except:
-                client_socket.send(
-                    "Failed to save file to %s\r\n" % upload_destination
-                )
-
-        if len(execute):
-            output = run_command(execute)
-            client_socket.send(output)
-
-        if command:
-            prompt = "<BHP:#> "
-            client_socket.send(prompt)
-
-            while True:
-                cmd_buffer = " "
-                while "\n" not in cmd_buffer:
-                    cmd_buffer += client_socket.recv(1024)
-
-                response = run_command(cmd_buffer)
-                response += prompt
-
-                client_socket.send(response)
+            client_socket.send(response)
+main()
