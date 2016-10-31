@@ -9,6 +9,7 @@ from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+from apiclient.http import MediaFileUpload
 
 """
 try:
@@ -24,10 +25,9 @@ args = parser.parse_args()
 if not args.file:
     print("Please specify the file" + "Usage: upload.py -f file/path -d dropbox/path")
     exit(1)
-file = args.file
+up_file = args.file
 
-print(args, file)
-exit()
+print(args, up_file)
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/drive-python-quickstart.json
@@ -35,12 +35,10 @@ exit()
 SCOPES = 'https://www.googleapis.com/auth/drive.file'
 CLIENT_SECRET_FILE = '/home/masakazu-o/client_secret.json'
 #CLIENT_SECRET_FILE = 'client_secret.json'
-#APPLICATION_NAME = 'Drive API Python Quickstart'
-APPLICATION_NAME = '0B8NczjYO8kzYZjNxaTRkbzNzNjg'
-
+APPLICATION_NAME = 'Drive API Python Quickstart'
+#APPLICATION_NAME = '608544519641-mhku94nmu3l54in26f50eis6tt4ogklo.apps.googleusercontent.com'
 
 class GoogleDriveUploader:
-
     def __init__(self):
         self.credentials = self.get_credentials()
         self.http = self.credentials.authorize(httplib2.Http())
@@ -68,8 +66,9 @@ class GoogleDriveUploader:
         credential_dir = os.path.join(home_dir, '.credentials')
         if not os.path.exists(credential_dir):
             os.makedirs(credential_dir)
-        credential_path = os.path.join(credential_dir,
-                                   'drive-python-quickstart.json')
+        #credential_path = os.path.join(credential_dir,'drive-python-quickstart.json')
+        credential_path = os.path.join(home_dir, 'client_secret.json')
+        #print(credential_path)
 
         store = Storage(credential_path)
         credentials = store.get()
@@ -80,7 +79,7 @@ class GoogleDriveUploader:
                 credentials = tools.run_flow(flow, store, flags)
             else: # Needed only for compatibility with Python 2.6
                 credentials = tools.run(flow, store)
-            print('Storing credentials to ' + credential_path)
+                print('Storing credentials to ' + credential_path)
         return credentials
 
     """
@@ -105,18 +104,18 @@ class GoogleDriveUploader:
                 print('{0} ({1})'.format(item['name'], item['id']))
     """
 
-    def upload(file_name):
+    def upload(self, up_file):
         file_metadata = {
             'name' : 'My Report',
             'mimeType' : 'application/vnd.google-apps.spreadsheet'
         }
     #media = MediaFileUpload('files/report.csv', mimetype='text/csv', resumable=True)
     #media = MediaFileUpload('files/file_name', mimetype=None, resumable=True)
-        media = MediaFileUpload('test.txt', mimetype=None, resumable=True)
-        file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+        media = MediaFileUpload(up_file, mimetype=None, resumable=True)
+        file = self.service.files().create(body=file_metadata, media_body=media, fields='id').execute()
         print('File ID: %s' % file.get('id'))
 
 if __name__ == '__main__':
     uploader = GoogleDriveUploader()
-    uploader.upload(file)
+    uploader.upload(up_file)
 
