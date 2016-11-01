@@ -1,34 +1,33 @@
-
 from __future__ import print_function
 import httplib2
 import os
 import sys
 import argparse
+import io
 
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
-from apiclient.http import MediaFileUpload
+from apiclient.http import MediaIoBaseDownload
 
 parser = argparse.ArgumentParser(description='upload a file to GoogleDrive')
 parser.add_argument('--file', '-f', help='file path')
-parser.add_argument('--dstpath', '-d', help='GoogleDrive path')
+#parser.add_argument('--dstpath', '-d', help='GoogleDrive path')
 args = parser.parse_args()
 
 if not args.file:
     print("Please specify the file" + "Usage: upload.py -f file/path -d googledrive/path")
     exit(1)
-up_file = args.file
+down_file = args.file
 
-# If modifying these scopes, delete your previously saved credentials
-# at ~/.credentials/drive-python-quickstart.json
+print(down_file)
+
 SCOPES = 'https://www.googleapis.com/auth/drive.file'
-#CLIENT_SECRET_FILE = '/home/masakazu-o/client_secret.json'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'test.app'
 
-class GoogleDriveUploader:
+class GoogleDriveDownloader:
     def __init__(self):
         self.credentials = self.get_credentials()
         self.http = self.credentials.authorize(httplib2.Http())
@@ -61,47 +60,23 @@ class GoogleDriveUploader:
                 print('Storing credentials to ' + credential_path)
         return credentials
 
-    """
-    def main():
-        Shows basic usage of the Google Drive API.
+    def download(self, down_file):
+        #file_id = '0BwwA4oUTeiV1UVNwOHItT0xfa2M'
+        file_id = down_file
+        print(file_id.get())
+        exit()
 
-        Creates a Google Drive API service object and outputs the names and IDs
-        for up to 10 files.
+        request = self.service.files().get_media(fileId=file_id)
+        print(request)
+        #exit()
 
-        credentials = get_credentials()
-        http = credentials.authorize(httplib2.Http())
-        service = discovery.build('drive', 'v3', http=http)
-
-        results = service.files().list(
-            pageSize=10,fields="nextPageToken, files(id, name)").execute()
-        items = results.get('files', [])
-        if not items:
-            print('No files found.')
-        else:
-            print('Files:')
-            for item in items:
-                print('{0} ({1})'.format(item['name'], item['id']))
-    """
-
-    def upload(self, up_file):
-
-        file_metadata = {
-            'name' : up_file,
-            #'mimeType' : 'application/vnd.google-apps.spreadsheet'
-            'mimeType' : 'application/vnd.google-apps.document'
-        }
-        """
-        file_metadata = {
-            'name' : up_file
-        }
-        """
-    #media = MediaFileUpload('files/file_name', mimetype=None, resumable=True)
-        media = MediaFileUpload(up_file, mimetype=None, resumable=True)
-        file = self.service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        print('File ID: %s' % file.get('id'))
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+            print("Download %d%%." % int(status.progress() * 100))
 
 if __name__ == '__main__':
-    uploader = GoogleDriveUploader()
-    uploader.upload(up_file)
-
-
+    downloader = GoogleDriveDownloader()
+    downloader.download(down_file)
