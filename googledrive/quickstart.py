@@ -16,8 +16,9 @@ except ImportError:
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/drive-python-quickstart.json
-#SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly'
-SCOPES = 'https://www.googleapis.com/auth/drive.file'
+#SCOPES = 'https://www.googleapis.com/auth/drive.readonly'
+#SCOPES = 'https://www.googleapis.com/auth/drive.file'
+SCOPES = 'https://www.googleapis.com/auth/drive'
 #CLIENT_SECRET_FILE = '/home/masakazu-o/client_secret.json'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'test.app'
