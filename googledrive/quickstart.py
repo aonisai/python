@@ -24,7 +24,6 @@ CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'test.app'
 #APPLICATION_NAME = 'Drive API Python Quickstart'
 
-
 def get_credentials():
     """Gets valid user credentials from storage.
 
