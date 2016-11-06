@@ -40,17 +40,16 @@ if __name__ == '__main__':
     f = args.file
     has_dbpath = hasattr(args, 'dbpath')
     if not has_dbpath:
-        print("Oh NO!")
+        #print("Oh NO!")
         sys.exit(1)
     if not args.dbpath:
-        print("1")
+        #print("1")
         dbpath = '/' + f
     else:
-        print("YES")
+        #print("YES")
         dbpath = args.dbpath
 
     with open(f, 'rb') as f:
-        #
         try:
             dbx.files_upload(f, dbpath, mode=WriteMode('overwrite'))
         except ApiError as error:

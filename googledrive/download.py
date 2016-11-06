@@ -12,14 +12,15 @@ from oauth2client.file import Storage
 from apiclient.http import MediaIoBaseDownload
 
 parser = argparse.ArgumentParser(description='download a file from GoogleDrive')
-parser.add_argument('--file', '-f', help='file path')
-#parser.add_argument('--dstpath', '-d', help='GoogleDrive path')
+parser.add_argument('--file', '-f', help='source file path')
+parser.add_argument('--dstpath', '-d', help='destination path')
 args = parser.parse_args()
 
 if not args.file:
     print("Please specify the file" + "Usage: download.py -f file/path")
     exit(1)
 down_file = args.file
+#dst_path = args.dstpath
 
 #SCOPES = 'https://www.googleapis.com/auth/drive.file'
 SCOPES = 'https://www.googleapis.com/auth/drive'
@@ -59,24 +60,38 @@ class GoogleDriveDownloader:
                 print('Storing credentials to ' + credential_path)
         return credentials
 
+    #def download(self, matchfile, dstpath):
     def download(self, matchfile):
         file_id = format(matchfile['id'])
-        print(file_id)
+        #print(file_id)
 
         request = self.service.files().get_media(fileId=file_id)
         #request = self.service.files().export_media(fileId=file_id, mimeType='application/vnd.google-apps.document').execute()
         #request = self.service.files().export_media(fileId=file_id, mimeType='text/plain')
-        print(request)
+        #print(request)
+
+        #has_dstpath = hasattr(args, 'dstpath')
+        """
+        if not has_dstpath:
+            print("Oh NO!")
+            sys.exit(1)
+
+        if not args.dstpath:
+            dstpath = '/' + matchfile['name']
+            print(dstpath)
+        else:
+            #dstpath = args.dstpath
+            print(dstpath)
+        exit()
+        """
 
         #fh = io.BytesIO()
         fh = io.FileIO(format(matchfile['name']), 'wb')
-        print(fh)
-        exit()
         downloader = MediaIoBaseDownload(fh, request)
         done = False
         while done is False:
             status, done = downloader.next_chunk()
-            print("Download %d%%." % int(status.progress() * 100))
+            #print("Download %d%%." % int(status.progress() * 100))
 
     "get the list of GoogleDrive"
     def get_list(self):
@@ -86,8 +101,9 @@ class GoogleDriveDownloader:
         if not items:
             print('No files found.')
         else:
+            """
             print('Files:')
-            """for item in items:
+            for item in items:
                 print('{0} ({1})'.format(item['name'], item['id']))
             """
         return items
@@ -96,7 +112,7 @@ class GoogleDriveDownloader:
     def match(self, datalist, file):
         for item in datalist:
             if format(item['name']) == file:
-                print('match %s' % format(item['name']))
+                #print('match %s' % format(item['name']))
                 return item
             else:
                 pass
@@ -107,3 +123,4 @@ if __name__ == '__main__':
     data_list = downloader.get_list()
     match_file = downloader.match(data_list, down_file)
     downloader.download(match_file)
+    #downloader.download(match_file, dst_path)

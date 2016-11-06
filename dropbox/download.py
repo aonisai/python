@@ -16,8 +16,8 @@ from dropbox.files import FileMetadata, FolderMetadata
 from dropbox.exceptions import ApiError
 
 parser = argparse.ArgumentParser(description='upload a file to Dropbox')
-parser.add_argument('--file', '-f', help='file path')
-parser.add_argument('--dstpath', '-d', help='dropbox path')
+parser.add_argument('--file', '-f', help='source file path')
+parser.add_argument('--dstpath', '-d', help='destination path')
 
 # upload a file
 if __name__ == '__main__':
@@ -51,7 +51,6 @@ if __name__ == '__main__':
     #    dst = m.name
     #else:
     dst = args.dstpath
-    print(dst)
 
     dbx.files_download_to_file(dst, f)
     #meta, res = dbx.files_download_to_file(dst, f)
