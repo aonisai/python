@@ -24,9 +24,10 @@ up_file = args.file
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/drive-python-quickstart.json
 SCOPES = 'https://www.googleapis.com/auth/drive.file'
-#CLIENT_SECRET_FILE = '/home/masakazu-o/client_secret.json'
+# CLIENT_SECRET_FILE = '/home/masakazu-o/client_secret.json'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'test.app'
+
 
 class GoogleDriveUploader:
     def __init__(self):
@@ -86,19 +87,17 @@ class GoogleDriveUploader:
     def upload(self, up_file):
 
         file_metadata = {
-            'name' : up_file,
-            #'mimeType' : 'application/vnd.google-apps.spreadsheet'
-            #'mimeType' : 'application/vnd.google-apps.unknown'
-            'mimeType' : 'text/plain'
+            'name': up_file,
+            # 'mimeType' : 'application/vnd.google-apps.spreadsheet'
+            # 'mimeType' : 'application/vnd.google-apps.unknown'
+            'mimeType': 'text/plain'
         }
 
-    #media = MediaFileUpload('files/file_name', mimetype=None, resumable=True)
+    # media = MediaFileUpload('files/file_name', mimetype=None, resumable=True)
         media = MediaFileUpload(up_file, mimetype=None, resumable=True)
         file = self.service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        #print('File ID: %s' % file.get('id'))
+        # print('File ID: %s' % file.get('id'))
 
 if __name__ == '__main__':
     uploader = GoogleDriveUploader()
     uploader.upload(up_file)
-
-

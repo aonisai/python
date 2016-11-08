@@ -16,16 +16,19 @@ parser.add_argument('--file', '-f', help='source file path')
 parser.add_argument('--dstpath', '-d', help='destination path')
 args = parser.parse_args()
 
-if not args.file:
+if not args:
     print("Please specify the file" + "Usage: download.py -f file/path")
     exit(1)
 down_file = args.file
-#dst_path = args.dstpath
+dst_path = args.dstpath
 
-#SCOPES = 'https://www.googleapis.com/auth/drive.file'
+match_file = None
+
+# SCOPES = 'https://www.googleapis.com/auth/drive.file'
 SCOPES = 'https://www.googleapis.com/auth/drive'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'test.app'
+
 
 class GoogleDriveDownloader:
     def __init__(self):
@@ -60,42 +63,39 @@ class GoogleDriveDownloader:
                 print('Storing credentials to ' + credential_path)
         return credentials
 
-    #def download(self, matchfile, dstpath):
-    def download(self, matchfile):
-        file_id = format(matchfile['id'])
-        #print(file_id)
+    def download(self, matchfile, dstpath):
+        # def download(self, matchfile):
+        # file_id = format(matchfile['id'])
+        file_id = '0B8NczjYO8kzYNjB1RmRZaEl3Ykk'
 
         request = self.service.files().get_media(fileId=file_id)
-        #request = self.service.files().export_media(fileId=file_id, mimeType='application/vnd.google-apps.document').execute()
-        #request = self.service.files().export_media(fileId=file_id, mimeType='text/plain')
-        #print(request)
+        # request = self.service.files().export_media(fileId=file_id, mimeType='application/vnd.google-apps.document')
+        # .execute()
+        # request = self.service.files().export_media(fileId=file_id, mimeType='text/plain')
 
-        #has_dstpath = hasattr(args, 'dstpath')
-        """
-        if not has_dstpath:
-            print("Oh NO!")
-            sys.exit(1)
+        # has_dstpath = hasattr(args, 'dstpath')
 
-        if not args.dstpath:
-            dstpath = '/' + matchfile['name']
-            print(dstpath)
-        else:
-            #dstpath = args.dstpath
-            print(dstpath)
-        exit()
-        """
+        if args.dstpath:
+            if os.path.isdir(dstpath):
+                if dstpath.endswith('/'):
+                    dstpath = dstpath + matchfile['name']
+                else:
+                    dstpath = dstpath + '/' + matchfile['name']
+        elif not args.dstpath:
+            dstpath = os.path.join(os.getcwd(), matchfile['name'])
+        # print(dstpath)
 
-        #fh = io.BytesIO()
-        fh = io.FileIO(format(matchfile['name']), 'wb')
+        # fh = io.BytesIO()
+        fh = io.FileIO(format(dstpath), 'wb')
         downloader = MediaIoBaseDownload(fh, request)
         done = False
         while done is False:
             status, done = downloader.next_chunk()
-            #print("Download %d%%." % int(status.progress() * 100))
+            # print("Download %d%%." % int(status.progress() * 100))
 
     "get the list of GoogleDrive"
     def get_list(self):
-        #result = self.service.files().list().execute()
+        # result = self.service.files().list().execute()
         result = self.service.files().list(fields="files(id, name)").execute()
         items = result.get('files', [])
         if not items:
@@ -112,15 +112,15 @@ class GoogleDriveDownloader:
     def match(self, datalist, file):
         for item in datalist:
             if format(item['name']) == file:
-                #print('match %s' % format(item['name']))
+                # print('match %s' % format(item['name']))
                 return item
             else:
                 pass
-                #print('not match')
+                # print('not match')
 
 if __name__ == '__main__':
     downloader = GoogleDriveDownloader()
-    data_list = downloader.get_list()
-    match_file = downloader.match(data_list, down_file)
-    downloader.download(match_file)
-    #downloader.download(match_file, dst_path)
+    # data_list = downloader.get_list()
+    # match_file = downloader.match(data_list, down_file)
+    # downloader.download(match_file)
+    downloader.download(match_file, dst_path)
