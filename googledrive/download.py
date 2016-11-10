@@ -65,15 +65,12 @@ class GoogleDriveDownloader:
 
     def download(self, matchfile, dstpath):
         # def download(self, matchfile):
-        # file_id = format(matchfile['id'])
-        file_id = '0B8NczjYO8kzYNjB1RmRZaEl3Ykk'
+        file_id = format(matchfile['id'])
+        # file_id = '0B8NczjYO8kzYNjB1RmRZaEl3Ykk'
 
         request = self.service.files().get_media(fileId=file_id)
-        # request = self.service.files().export_media(fileId=file_id, mimeType='application/vnd.google-apps.document')
-        # .execute()
+        # request = self.service.files().export_media(fileId=file_id, mimeType='application/vnd.google-apps.document').execute()
         # request = self.service.files().export_media(fileId=file_id, mimeType='text/plain')
-
-        # has_dstpath = hasattr(args, 'dstpath')
 
         if args.dstpath:
             if os.path.isdir(dstpath):
@@ -85,9 +82,10 @@ class GoogleDriveDownloader:
             dstpath = os.path.join(os.getcwd(), matchfile['name'])
         # print(dstpath)
 
-        # fh = io.BytesIO()
         fh = io.FileIO(format(dstpath), 'wb')
-        downloader = MediaIoBaseDownload(fh, request)
+        downloader = MediaIoBaseDownload(
+            fh, request, chunksize=1024*1024*128
+        )
         done = False
         while done is False:
             status, done = downloader.next_chunk()
@@ -101,11 +99,10 @@ class GoogleDriveDownloader:
         if not items:
             print('No files found.')
         else:
-            """
-            print('Files:')
+            # print('Files:')
             for item in items:
-                print('{0} ({1})'.format(item['name'], item['id']))
-            """
+                # print('{0} ({1})'.format(item['name'], item['id']))
+                pass
         return items
 
     "search a match data from list"
@@ -120,7 +117,7 @@ class GoogleDriveDownloader:
 
 if __name__ == '__main__':
     downloader = GoogleDriveDownloader()
-    # data_list = downloader.get_list()
-    # match_file = downloader.match(data_list, down_file)
+    data_list = downloader.get_list()
+    match_file = downloader.match(data_list, down_file)
     # downloader.download(match_file)
     downloader.download(match_file, dst_path)

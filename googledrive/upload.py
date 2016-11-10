@@ -93,9 +93,13 @@ class GoogleDriveUploader:
             'mimeType': 'text/plain'
         }
 
-    # media = MediaFileUpload('files/file_name', mimetype=None, resumable=True)
-        media = MediaFileUpload(up_file, mimetype=None, resumable=True)
-        file = self.service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+        media = MediaFileUpload(
+            up_file, mimetype=None,
+            chunksize=1024*1024*128, resumable=True
+        )
+        file = self.service.files().create(
+            body=file_metadata, media_body=media, fields='id'
+        ).execute()
         # print('File ID: %s' % file.get('id'))
 
 if __name__ == '__main__':

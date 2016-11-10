@@ -27,9 +27,9 @@ if __name__ == '__main__':
 
     if not args.file:
         print("Please specify the file" + "Usage: upload.py -f file/path -d dropbox/path")
-        #exit(1)
+        # exit(1)
     f = args.file
-    #print(f)
+    # print(f)
 
     """
     has_dstpath = hasattr(args, 'dstpath')
@@ -43,17 +43,17 @@ if __name__ == '__main__':
         print("YES")
         dstpath = args.dstpath
     """
-    #m, r = dbx.files_download(f)
-    #meta, res = dbx.files_download_to_file('/home/masakazu-o/Downloads/hoge.txt', f)
-    #dst = dst + "/" + meta.name
+    # m, r = dbx.files_download(f)
+    # meta, res = dbx.files_download_to_file('/home/masakazu-o/Downloads/hoge.txt', f)
+    # dst = dst + "/" + meta.name
 
-    #if not args.dstpath:
+    # if not args.dstpath:
     #    dst = m.name
-    #else:
+    # else:
     dst = args.dstpath
 
     dbx.files_download_to_file(dst, f)
-    #meta, res = dbx.files_download_to_file(dst, f)
+    # meta, res = dbx.files_download_to_file(dst, f)
 
     """
     with open(dst, 'w') as dst:
