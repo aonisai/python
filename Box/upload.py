@@ -1,20 +1,50 @@
 from boxsdk import OAuth2
 from boxsdk import Client
+import argparse
 
 oauth = OAuth2(
   client_id='bde3fxtg8ysjbrtdhlflftc1u9brsnbl',
   client_secret='jxfAFzhTdPA2DXBAIXyz4fIPl4OjzwAR',
-  access_token='A2uCMnadJBF0UriO2X3m2dRv5vQwRe0b',
+  access_token='258JF714QRkDap6M2ifUQhLBpw2O3jF5',
 )
 client = Client(oauth)
-root_folder = client.folder(folder_id='0')
-root_folder_with_info = root_folder.get()
-# print('root_folder_with_info.name:' + root_folder_with_info.name)
 
-root_folder_with_limited_info = root_folder.get(fields=['owned_by'])
-print(root_folder_with_limited_info.owned_by)
-# print('root_folder_with_limited_info:' + root_folder_with_limited_info.owned_by)
-# print(root_folder_with_info.keys())
+parser = argparse.ArgumentParser(description='upload a file to GoogleDrive')
+parser.add_argument('--file', '-f', help='file path')
+args = parser.parse_args()
+
+if not args.file:
+    print("Please specify the file" + "Usage: upload.py -f file/path -d googledrive/path")
+    exit(1)
+up_file = args.file
+root_folder = client.folder(folder_id='0')
+
 
 # upload
-root_folder.upload('test.txt')
+def upload(upfile):
+    # print('upload')
+    # exit()
+    root_folder.upload(upfile)
+
+
+# overwrite
+def update(upfile, fileid):
+    # print('update')
+    # exit()
+    file_id = client.file(fileid).get()
+    print(file_id.name)
+    file_id.update_contents(upfile)
+
+
+def main():
+    results = client.search(up_file, 1, 0)
+    # result = results[0]
+    if not results:
+        upload(up_file)
+    else:
+        id = results[0].id
+        update(up_file, id)
+
+
+if __name__ == '__main__':
+    main()

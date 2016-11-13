@@ -6,7 +6,7 @@ from boxsdk.exception import BoxAPIException
 oauth = OAuth2(
   client_id='bde3fxtg8ysjbrtdhlflftc1u9brsnbl',
   client_secret='jxfAFzhTdPA2DXBAIXyz4fIPl4OjzwAR',
-  access_token='cxYqDz5SIALBUCt4tMiAXe9K5W9ITapm',
+  access_token='uxjnkyGjy0uaiH6HUv2tfxHzFny9oo6T',
 )
 client = Client(oauth)
 root_folder = client.folder(folder_id='0')
@@ -28,7 +28,6 @@ me = client.user(user_id='me').get()
 print(me)
 print('name:' + me.name)
 print('login:' + me.login)
-print('URL:' + me.avatar_url)
 
 root_folder = client.folder(folder_id='0').get()
 print('folder owner:' + root_folder.owned_by['login'])
@@ -39,9 +38,9 @@ print('list files')
 for item in items:
     print('name:{0}, id:{1}'.format(item.name, item.id))
 
+exit()
 
 # upload
-"""
 stream = io.StringIO()
 stream.write('Box Python SDK test!')
 stream.seek(0)
@@ -51,7 +50,15 @@ except BoxAPIException:
     pass
 # box_file = client.folder('0').upload_stream(stream, 'box_python_sdk_test.txt')
 print(box_file.name)
-
 print(box_file.content())
 print(box_file.id)
-"""
+
+# box_file.id = 0
+results = client.search('Box Python SDK test', 2, 0)
+matching_results = (r for r in results if r.id == box_file.id)
+for m in matching_results:
+    print(m.name)
+    print(m.created_at)
+    break
+else:
+    print('No match found')
