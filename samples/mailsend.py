@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 from email.header import Header
 from email.utils import formatdate
 
-gmail_address = 'seiunryou0602@gmail.com'
+gmail_address = 'gmail password'
 gmail_passwd = 'eqqtgihmqaqfwgrf'
 #'09020893402oku!'
 
