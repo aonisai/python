@@ -58,7 +58,7 @@ class GoogleDriveDownloader:
             flow.user_agent = APPLICATION_NAME
             if flags:
                 credentials = tools.run_flow(flow, store, flags)
-            else: # Needed only for compatibility with Python 2.6
+            else:  # Needed only for compatibility with Python 2.6
                 credentials = tools.run(flow, store)
                 print('Storing credentials to ' + credential_path)
         return credentials
@@ -69,7 +69,8 @@ class GoogleDriveDownloader:
         # file_id = '0B8NczjYO8kzYNjB1RmRZaEl3Ykk'
 
         request = self.service.files().get_media(fileId=file_id)
-        # request = self.service.files().export_media(fileId=file_id, mimeType='application/vnd.google-apps.document').execute()
+        # request = self.service.files().export_media(fileId=file_id, mimeType='application/vnd.google-apps.document')
+        # .execute()
         # request = self.service.files().export_media(fileId=file_id, mimeType='text/plain')
 
         if args.dstpath:

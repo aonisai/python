@@ -88,8 +88,6 @@ class GoogleDriveUploader:
 
         file_metadata = {
             'name': up_file,
-            # 'mimeType' : 'application/vnd.google-apps.spreadsheet'
-            # 'mimeType' : 'application/vnd.google-apps.unknown'
             'mimeType': 'text/plain'
         }
 
