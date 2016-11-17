@@ -55,8 +55,3 @@ if __name__ == '__main__':
     dbx.files_download_to_file(dst, f)
     # meta, res = dbx.files_download_to_file(dst, f)
 
-    """
-    with open(dst, 'w') as dst:
-    #with open(dstpath, 'wb') as dst:
-        dst.write(res.text)
-    """

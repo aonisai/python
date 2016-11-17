@@ -5,7 +5,7 @@ import argparse
 oauth = OAuth2(
     client_id='bde3fxtg8ysjbrtdhlflftc1u9brsnbl',
     client_secret='jxfAFzhTdPA2DXBAIXyz4fIPl4OjzwAR',
-    access_token='258JF714QRkDap6M2ifUQhLBpw2O3jF5',
+    access_token='LKMQlbxQK9RLiud5raKnSkbHuWG2abcL',
 )
 client = Client(oauth)
 root_folder = client.folder(folder_id='0')

@@ -6,7 +6,7 @@ from boxsdk.exception import BoxAPIException
 oauth = OAuth2(
   client_id='bde3fxtg8ysjbrtdhlflftc1u9brsnbl',
   client_secret='jxfAFzhTdPA2DXBAIXyz4fIPl4OjzwAR',
-  access_token='uxjnkyGjy0uaiH6HUv2tfxHzFny9oo6T',
+  access_token='Zd3HyETzTvivOXZFqksBbIgZZlWrbgMe',
 )
 client = Client(oauth)
 root_folder = client.folder(folder_id='0')
