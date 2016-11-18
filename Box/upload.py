@@ -5,7 +5,7 @@ import argparse
 oauth = OAuth2(
   client_id='bde3fxtg8ysjbrtdhlflftc1u9brsnbl',
   client_secret='jxfAFzhTdPA2DXBAIXyz4fIPl4OjzwAR',
-  access_token='fU5XB7DzHklD9KQyP4e7ip9YtpUKKlr5',
+  access_token='18ENnlr2jKxjBGNUNEKZDvcoQheUVJJp',
 )
 client = Client(oauth)
 
@@ -22,17 +22,12 @@ root_folder = client.folder(folder_id='0')
 
 # upload
 def upload(upfile):
-    # print('upload')
-    # exit()
     root_folder.upload(upfile)
 
 
 # overwrite
 def update(upfile, fileid):
-    # print('update')
-    # exit()
     file_id = client.file(fileid).get()
-    print(file_id.name)
     file_id.update_contents(upfile)
 
 

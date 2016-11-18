@@ -34,28 +34,20 @@ if __name__ == '__main__':
         print("Please specify the file" + "Usage: upload.py -f file/path")
         exit(1)
 
-    if not '/' in args.file:
-        print('arg')
-        f = args.file
+    place = args.file.rfind('/')
+    if place:
+        f = args.file[place+1:]
     else:
-        if args.file[0] == '/':
-            print('abs')
-            f = args.file
-        else:
-            f = os.getcwd() + '/' + args.file
-            print('relative')
-    print(f)
-#    exit()
+        f = args.file
+    # print(f)
 
     if not args.dbpath:
-        # print("1")
         dbpath = '/' + f
+        print(dbpath)
     else:
-        # print("YES")
         dbpath = args.dbpath
 
-    print('let try')
-    with open(f, 'rb') as f:
+    with open(args.file, 'rb') as f:
         try:
             dbx.files_upload(f, dbpath, mode=WriteMode('overwrite'))
         except ApiError as error:

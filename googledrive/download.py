@@ -75,13 +75,9 @@ class GoogleDriveDownloader:
 
         if args.dstpath:
             if os.path.isdir(dstpath):
-                if dstpath.endswith('/'):
-                    dstpath = dstpath + matchfile['name']
-                else:
-                    dstpath = dstpath + '/' + matchfile['name']
-        elif not args.dstpath:
+                dstpath = os.path.join(dstpath, matchfile['name'])
+        else:
             dstpath = os.path.join(os.getcwd(), matchfile['name'])
-        # print(dstpath)
 
         fh = io.FileIO(format(dstpath), 'wb')
         downloader = MediaIoBaseDownload(

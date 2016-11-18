@@ -2,7 +2,6 @@
 from __future__ import print_function
 import httplib2
 import os
-import sys
 import argparse
 
 from apiclient import discovery
@@ -86,8 +85,14 @@ class GoogleDriveUploader:
 
     def upload(self, up_file):
 
+        place = up_file.rfind('/')
+        if place:
+            upfile = up_file[place+1:]
+        else:
+            upfile = up_file
+
         file_metadata = {
-            'name': up_file,
+            'name': upfile,
             'mimeType': 'text/plain'
         }
 
