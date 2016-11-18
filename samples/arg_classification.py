@@ -6,7 +6,7 @@ import os
 words = "/home/masakazu-o/test/sum.c"
 print(words)
 
-if not '/' in words:
+if not os.path.isdir(words):
     print('file name')
 else:
     if words[0] == '/':
