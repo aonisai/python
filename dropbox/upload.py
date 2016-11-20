@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     if not args.dbpath:
         dbpath = '/' + f
-        print(dbpath)
+        # print(dbpath)
     else:
         dbpath = args.dbpath
 
