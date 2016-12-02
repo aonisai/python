@@ -1,3 +1,4 @@
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
 
 import smtplib
@@ -6,14 +7,13 @@ from email.header import Header
 from email.utils import formatdate
 
 gmail_address = 'gmail password'
-gmail_passwd = 'eqqtgihmqaqfwgrf'
-#'09020893402oku!'
+gmail_passwd = 'password'
 
 gmail_smtp_address = 'smtp.gmail.com'
 gmail_smtp_port = 587
 
-from_address = 'seiunryou0602@gmail.com'
-to_address = 'yanoakio0601@gmail.com'
+from_address = '@gmail.com'
+to_address = '@gmail.com'
 
 charset = 'ISO_2022_jp'
 subject = u'title'
