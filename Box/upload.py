@@ -5,7 +5,7 @@ import argparse
 oauth = OAuth2(
   client_id='bde3fxtg8ysjbrtdhlflftc1u9brsnbl',
   client_secret='jxfAFzhTdPA2DXBAIXyz4fIPl4OjzwAR',
-  access_token='tvG5Hv6B9MmfQdIaucDkIAvwYqgkZ9Q4',
+  access_token='',
 )
 client = Client(oauth)
 
