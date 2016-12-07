@@ -5,8 +5,15 @@ import argparse
 oauth = OAuth2(
   client_id='bde3fxtg8ysjbrtdhlflftc1u9brsnbl',
   client_secret='jxfAFzhTdPA2DXBAIXyz4fIPl4OjzwAR',
-  access_token='',
+  access_token='fiv1kM8MWx7n75gReFdc2Kr13UZo4tha',
 )
+'''
+oauth = OAuth2(
+    client_id='rf0fcllg0c64hvco4ee5fc9h73uh3xqs',
+    client_secret='VIdL3Ese5RRDCug9O4Ll4OwzCAwmHqdM',
+    access_token='',
+)
+'''
 client = Client(oauth)
 
 parser = argparse.ArgumentParser(description='upload a file to GoogleDrive')
