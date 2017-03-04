@@ -97,7 +97,7 @@ def main():
     # service_account_email = 'analytics-test@midyear-button-159511.iam.gserviceaccount.com'
     # '<Replace with your service account email address.>'
     # key_file_location = '/home/masakazu-o/PycharmProjects/googleAPI/analytic/client_secrets.p12'
-    key_file_location = '/home/masakazu-o/git/python/googleAPI/analytic/client_secrets.p12'
+    key_file_location = '/home/enigma/git/python/googleAPI/analytic/client_secrets.p12'
     # '<Replace with /path/to/generated/client_secrets.p12>'
 
     # Authenticate and construct service.
