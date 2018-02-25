@@ -3,8 +3,6 @@
 
 # countlog = "countlog.csv"
 # ac_report = "ac_report.csv"
-countlog = "/home/enigma/temp/work/countlog.csv"
-ac_report = "/home/enigma/temp/work/ac_report.csv"
 
 with open(countlog, "r") as countlog:
     for line in countlog:
