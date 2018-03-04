@@ -1,7 +1,7 @@
 #! /home/enigma/.pyenv/versions/2.7.13/bin/python
 # -*- coding: utf-8 -*-
 
-import pexpect
+# import pexpect
 
 expect_list = [u"#", u">"]
 log = "log_test"
@@ -18,10 +18,8 @@ with open(devlist, "r") as devlist, open(log, "w") as logf:
             prc.expect("(?!)password:")
             prc.sendline(pw)
             prc.expect("$")
-            # prc.expect(">")
             prc.sendline(command_list[1])
-            # prc.expect("$")
-            prc.expect("#")
+            prc.expect("$")
             prc.sendline(command_list[0])
             prc.expect(expect_list)
             prc.write("%%%%%% session closed %s %%%%%%\n" % ip)
