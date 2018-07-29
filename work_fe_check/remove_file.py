@@ -4,12 +4,12 @@
 import os
 from datetime import date, timedelta
 
-path = "/home/enigma/git/python"
+path = ""
 # first_dir_list = []
 
 # get 30 days ago
 onemonth_ago = date.today() - timedelta(days=30)
-print onemonth_ago
+# print onemonth_ago
 
 # f_list = os.listdir(path)
 first_list = [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
@@ -57,4 +57,3 @@ for dir in first_dir_list:
     #             print "false"
     #             print os.path.join(dir, i)
             # print key
-
